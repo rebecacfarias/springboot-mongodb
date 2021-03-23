@@ -27,9 +27,6 @@ public class UserService {
 			}catch(Exception e){
 				throw new ObjectNotFoundException("Usuario nao encontrado");
 			}
-			
-			if(user == null)
-				throw new ObjectNotFoundException("Usuario nao encontrado");
 				
 			return user;
 		}
@@ -43,6 +40,25 @@ public class UserService {
 			findById(id);
 			repo.deleteById(id);
 		}
+		
+		
+		public User update(User userAtt) {
+			User currentUser;
+			try {
+				currentUser = repo.findById(userAtt.getId()).get();
+			}catch(Exception e) {
+				throw new ObjectNotFoundException("Usuario nao encontrado");
+			}
+			
+			updateData(currentUser, userAtt);
+			return repo.save(currentUser);
+		}
+		
+		public void updateData(User currentUser, User userAtt) {
+			currentUser.setName(userAtt.getName());
+			currentUser.setEmail(userAtt.getEmail());
+		}
+		
 		
 		public User fromDTO(UserDTO userDto) {
 			
