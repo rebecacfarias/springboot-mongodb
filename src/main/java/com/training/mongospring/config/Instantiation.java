@@ -1,6 +1,7 @@
 package com.training.mongospring.config;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.training.mongospring.domain.Post;
 import com.training.mongospring.domain.User;
+import com.training.mongospring.dto.AuthorDTO;
 import com.training.mongospring.repository.PostRepository;
 import com.training.mongospring.repository.UserRepository;
 
@@ -39,11 +41,14 @@ public class Instantiation implements CommandLineRunner{
 		userRepository.save(alex);
 		userRepository.save(bob);
 
-		Post post1 = new Post(null, sdf.parse("21/12/2012"), "Partiu viagem", "Vou viajar pra Marte!", maria);
-		Post post2 = new Post(null, sdf.parse("23/12/2012"), "To na nave", "O wi fi chega aqui na nave gente!", maria);
+		Post post1 = new Post(null, sdf.parse("21/12/2012"), "Partiu viagem", "Vou viajar pra Marte!", new AuthorDTO(maria));
+		Post post2 = new Post(null, sdf.parse("23/12/2012"), "To na nave", "O wi fi chega aqui na nave gente!",new AuthorDTO(maria));
 
 		postRepository.save(post1);
 		postRepository.save(post2);
+		
+		maria.getPosts().addAll(Arrays.asList(post1,post2));
+		userRepository.save(maria);
 	}
 	
 }
